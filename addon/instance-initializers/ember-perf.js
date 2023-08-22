@@ -14,7 +14,7 @@ export function initialize(instance) {
 
   // in 2.1 the ApplicationInstance uses `_lookupFactory` to avoid making lookupFactory public
   // along with `lookup`
-  let config = container._lookupFactory ? container._lookupFactory('config:environment') : container.lookupFactory('service:ember-perf');
+  let config = container._lookupFactory ? container._lookupFactory('config:environment') : container.lookup('service:ember-perf');
   let emberPerfConfig = config.emberPerfConfig || {};
 
   let shouldSubscribeToViewEvents = 'logViewEvents' in emberPerfConfig ? emberPerfConfig.logViewEvents : true;
