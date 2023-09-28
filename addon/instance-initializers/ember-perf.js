@@ -14,10 +14,13 @@ export function initialize(instance) {
 
   // in 2.1 the ApplicationInstance uses `_lookupFactory` to avoid making lookupFactory public
   // along with `lookup`
-  let config = container._lookupFactory ? container._lookupFactory('config:environment') : container.lookup('service:ember-perf');
-  let emberPerfConfig = config.emberPerfConfig || {};
+  let config = container._lookupFactory
+    ? container._lookupFactory('config:environment')
+    : container.lookup('service:ember-perf');
+  let emberPerfConfig = config.emberPerfConfig || config.defaults || {};
 
-  let shouldSubscribeToViewEvents = 'logViewEvents' in emberPerfConfig ? emberPerfConfig.logViewEvents : true;
+  let shouldSubscribeToViewEvents =
+    'logViewEvents' in emberPerfConfig ? emberPerfConfig.logViewEvents : true;
 
   if (shouldSubscribeToViewEvents) {
     let emberPerf = container.lookup('service:ember-perf');
@@ -28,12 +31,12 @@ export function initialize(instance) {
       },
       after(name, timestamp, payload) {
         emberPerf.renderAfter(name, timestamp, payload);
-      }
+      },
     });
   }
 }
 
 export default {
   name: 'ember-perf-instance-setup',
-  initialize
+  initialize,
 };

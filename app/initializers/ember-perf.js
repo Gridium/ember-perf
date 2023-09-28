@@ -20,19 +20,14 @@ function injectServiceOntoFactories(emberPerf, application) {
   application.register('service:ember-perf', EmberPerfService);
   application.inject('service:ember-perf', 'defaults', 'config:ember-perf');
 
-  injectionFactories.forEach((factory) => {
-    console.log({ factory });
+  (injectionFactories || ['route']).forEach((factory) => {
     application.inject(factory, 'perfService', 'service:ember-perf');
   });
-
-  console.log({ application });
 }
 
 export function initialize() {
   const application = arguments[1] || arguments[0];
   const container = application.__container__;
-
-  console.log({ initialize: container });
 
   const { emberPerf } = config;
 

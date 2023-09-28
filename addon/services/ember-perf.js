@@ -16,7 +16,7 @@ const {
   set,
   on,
 } = Ember;
-const { Object: EObj, Service, Logger } = Ember;
+const { Object: EObj, Service } = Ember;
 const Base = Service || EObj;
 const { keys } = Object;
 
@@ -27,11 +27,11 @@ let transitionCounter = 0;
 export default Base.extend(Evented, {
   transitionData: null,
 
-  debugMode: true, // oneWay('defaultDebugMode'),
+  debugMode: oneWay('defaultDebugMode'),
 
   debugLog() {
     if (this.get('debugMode')) {
-      Logger.log(...arguments);
+      console.log(...arguments);
     }
   },
 

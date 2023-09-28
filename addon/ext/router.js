@@ -9,14 +9,12 @@ export default Mixin.create({
 
   _doURLTransition() {
     let promise = this._super(...arguments);
-    console.log('_doURLTransition');
     this.trigger('_emberPerfWillTransition', { promise });
     return promise;
   },
 
   _doTransition() {
     let promise = this._super(...arguments);
-    console.log('_doTransition');
     this.trigger('_emberPerfWillTransition', { promise });
     return promise;
   },
