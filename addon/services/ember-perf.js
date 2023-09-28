@@ -7,23 +7,18 @@ import RenderData from '../core/render-data';
 const {
   Evented,
   assert,
-  String: {
-    classify
-  },
-  computed: {
-    oneWay
-  },
-  RSVP: {
-    defer
-  },
+  String: { classify },
+  computed: { oneWay },
+  RSVP: { defer },
   run: { scheduleOnce, schedule },
-  getWithDefault, get, set, on
+  getWithDefault,
+  get,
+  set,
+  on,
 } = Ember;
 const { Object: EObj, Service, Logger } = Ember;
 const Base = Service || EObj;
-const {
-  keys
-} = Object;
+const { keys } = Object;
 
 // jscs:enable disallowDirectPropertyAccess
 
@@ -32,7 +27,7 @@ let transitionCounter = 0;
 export default Base.extend(Evented, {
   transitionData: null,
 
-  debugMode: oneWay('defaultDebugMode'),
+  debugMode: true, // oneWay('defaultDebugMode'),
 
   debugLog() {
     if (this.get('debugMode')) {
@@ -64,9 +59,10 @@ export default Base.extend(Evented, {
       return;
     }
     transitionInfo.promise._emberPerfTransitionId = transitionCounter++;
-    let transitionRoute = transitionInfo.promise.targetName
-      || get(transitionInfo.promise, 'intent.name')
-      || get(transitionInfo.promise, 'state.handlerInfos.lastObject.name');
+    let transitionRoute =
+      transitionInfo.promise.targetName ||
+      get(transitionInfo.promise, 'intent.name') ||
+      get(transitionInfo.promise, 'state.handlerInfos.lastObject.name');
     let transitionCtxt = get(transitionInfo.promise, 'intent.contexts');
     let hasTransitionCtxt = transitionCtxt && transitionCtxt[0];
     let transitionUrl = get(transitionInfo.promise, 'intent.url');
@@ -86,7 +82,7 @@ export default Base.extend(Evented, {
     }
     this.renderData = this.transitionData = new TransitionData({
       destURL: transitionUrl,
-      destRoute: transitionRoute
+      destRoute: transitionRoute,
     });
     transitionInfo.promise.then(() => {
       this.transitionData.finish();
@@ -162,9 +158,11 @@ export default Base.extend(Evented, {
     this.debugLog(`view did render - ${(payload.view || {})._debugContainerKey}`);
   },
 
-  transitionLogger: on('transitionComplete', function(data) {
+  transitionLogger: on('transitionComplete', function (data) {
     if (this.get('debugMode')) {
-      console.group(`Top-Level Transition to ${data.destRoute} (${data.destURL}): ${data.elapsedTime}ms`);
+      console.group(
+        `Top-Level Transition to ${data.destRoute} (${data.destURL}): ${data.elapsedTime}ms`
+      );
       for (let i = 0; i < data.routes.length; i++) {
         console.group(`${data.routes[i].name} ${data.routes[i].elapsedTime}ms`);
         if (data.routes[i].views) {
@@ -179,7 +177,7 @@ export default Base.extend(Evented, {
     }
   }),
 
-  renderLogger: on('renderComplete', function(data) {
+  renderLogger: on('renderComplete', function (data) {
     if (this.get('debugMode')) {
       console.group(`Render Completed: ${data.elapsedTime}ms`);
       for (let i = 0; i < data.viewData.length; i++) {
@@ -188,5 +186,5 @@ export default Base.extend(Evented, {
       }
       console.groupEnd();
     }
-  })
+  }),
 });
