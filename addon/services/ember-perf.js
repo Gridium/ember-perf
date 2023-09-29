@@ -38,6 +38,7 @@ export default Base.extend(Evented, {
   init() {
     this._super(...arguments);
     this._setDefaults();
+    this.renderData = new RenderData();
   },
 
   _setDefaults() {
