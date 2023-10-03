@@ -44,6 +44,10 @@ prototype.routeFinishedSetup = function routeFinishedSetup(route) {
 };
 
 prototype._viewAdded = function _viewAdded(view, index) {
+  if (!this._lastActivatedRoute) {
+    // in Ember 3.x+ this can happen sometimes, for reasons unknown.
+    return;
+  }
   this._lastActivatedRoute.views.push(index);
 };
 
